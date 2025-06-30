@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'Gestione Libri')
@@ -84,6 +83,9 @@
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('books.show', $book) }}" class="btn btn-sm btn-outline-primary" title="Visualizza">
                                             <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('admin.books.copies', $book) }}" class="btn btn-sm btn-outline-success" title="Gestione Copie">
+                                            <i class="fas fa-copy"></i>
                                         </a>
                                         <button class="btn btn-sm btn-outline-secondary" title="Modifica">
                                             <i class="fas fa-edit"></i>

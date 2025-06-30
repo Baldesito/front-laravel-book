@@ -61,12 +61,12 @@
 </div>
 
 @auth
-<div class="row mt-5">
-    <div class="col-12">
-        <h3><i class="fas fa-fire"></i> I Tuoi Ultimi Libri</h3>
-        <p class="text-muted">Ecco alcuni suggerimenti basati sulle tue preferenze</p>
-        {{-- Qui potresti aggiungere una sezione con libri consigliati --}}
-    </div>
+<div class="mt-5 text-center">
+    <h2>Inizia a esplorare i nostri libri!</h2>
+    <p class="lead">Accedi al catalogo per scoprire le ultime novità e i titoli più popolari.</p>
+    <a class="btn btn-primary btn-lg" href="{{ route('books.index') }}" role="button">
+        <i class="fas fa-book"></i> Vai al Catalogo
+    </a>
 </div>
 @endauth
 @endsection

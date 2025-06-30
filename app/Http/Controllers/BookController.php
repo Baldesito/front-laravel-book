@@ -56,4 +56,38 @@ class BookController extends Controller
 
         return back()->with('success', 'Libro prenotato con successo!');
     }
+    public function myReservations()
+    {
+        $reservations = Reservation::with('bookCopy.book.category')
+                                  ->where('user_id', auth()->id())
+                                  ->where('status', 'attiva')
+                                  ->orderBy('reserved_at', 'desc')
+                                  ->paginate(10);
+
+        return view('books.my-reservations', compact('reservations'));
+    }
+
+    /**
+     * Annulla una prenotazione
+     */
+    public function cancelReservation(Reservation $reservation)
+    {
+        // Verifica che la prenotazione appartenga all'utente autenticato
+        if ($reservation->user_id !== auth()->id()) {
+            return back()->with('error', 'Non puoi annullare questa prenotazione');
+        }
+
+        // Verifica che la prenotazione sia ancora attiva
+        if ($reservation->status !== 'attiva') {
+            return back()->with('error', 'Questa prenotazione non può essere annullata');
+        }
+
+        // Annulla la prenotazione
+        $reservation->update(['status' => 'annullata']);
+
+        // Rendi disponibile la copia
+        $reservation->bookCopy->update(['status' => 'disponibile']);
+
+        return back()->with('success', 'Prenotazione annullata con successo!');
+    }
 }

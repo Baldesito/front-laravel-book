@@ -12,7 +12,12 @@ class Reservation extends Model
         'user_id', 'book_copy_id', 'reserved_at', 'status'
     ];
 
-    protected $dates = ['reserved_at'];
+
+    protected $casts = [
+        'reserved_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     public function user()
     {
