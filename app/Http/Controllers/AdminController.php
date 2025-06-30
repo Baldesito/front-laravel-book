@@ -84,4 +84,31 @@ class AdminController extends Controller
 
         return view('admin.users.index', compact('users'));
     }
+
+
+
+    public function bookCopies(Book $book)
+    {
+    $book->load('copies');
+    return view('admin.books.copies', compact('book'));
+    }
+
+    public function storeBookCopy(Request $request, Book $book)
+    {
+    $request->validate([
+        'quantity' => 'required|integer|min:1|max:10',
+        'condition' => 'required|in:ottimo,buono,discreto'
+    ]);
+
+    for ($i = 0; $i < $request->quantity; $i++) {
+        $book->copies()->create([
+            'condition' => $request->condition,
+            'status' => 'disponibile',
+            'barcode' => 'BC' . strtoupper(Str::random(10))
+        ]);
+    }
+
+    return redirect()->route('admin.books.copies', $book)
+                     ->with('success', $request->quantity . ' copie aggiunte con successo!');
+    }
 }
