@@ -1,118 +1,116 @@
 @extends('layouts.app')
 
-@section('title', 'Gestione Copie - ' . $book->title)
+@section('title', 'Nuovo Libro')
 
 @section('content')
-<div class="container">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1>Gestione Copie: {{ $book->title }}</h1>
-            <p class="text-muted">di {{ $book->author }}</p>
-        </div>
-    </div>
-
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Aggiungi Copie</h5>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('admin.books.copies.store', $book) }}">
-                        @csrf
-
-                        <div class="mb-3">
-                            <label for="quantity" class="form-label">Numero di copie da aggiungere</label>
-                            <input type="number" class="form-control @error('quantity') is-invalid @enderror"
-                                   id="quantity" name="quantity" value="1" min="1" max="10" required>
-                            @error('quantity')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="condition" class="form-label">Condizione</label>
-                            <select class="form-select @error('condition') is-invalid @enderror"
-                                    id="condition" name="condition" required>
-                                <option value="ottimo">Ottimo</option>
-                                <option value="buono" selected>Buono</option>
-                                <option value="discreto">Discreto</option>
-                            </select>
-                            @error('condition')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Aggiungi Copie
-                        </button>
-                    </form>
-                </div>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="fas fa-plus"></i> Aggiungi Nuovo Libro</h4>
             </div>
-        </div>
+            <div class="card-body">
+                <form method="POST" action="{{ route('admin.books.store') }}" enctype="multipart/form-data">
+                    @csrf
 
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Copie Esistenti ({{ $book->copies->count() }})</h5>
-                </div>
-                <div class="card-body">
-                    @if($book->copies->count() > 0)
-                        <div class="table-responsive">
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Codice</th>
-                                        <th>Condizione</th>
-                                        <th>Status</th>
-                                        <th>Note</th>
-                                        <th>Azioni</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($book->copies as $copy)
-                                        <tr>
-                                            <td><code>{{ $copy->barcode }}</code></td>
-                                            <td>
-                                                <span class="badge bg-{{ $copy->condition == 'ottimo' ? 'success' : ($copy->condition == 'buono' ? 'primary' : 'warning') }}">
-                                                    {{ ucfirst($copy->condition) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-{{ $copy->status == 'disponibile' ? 'success' : 'danger' }}">
-                                                    {{ ucfirst($copy->status) }}
-                                                </span>
-                                            </td>
-                                            <td>{{ $copy->notes ?? '-' }}</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-danger" title="Elimina">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Titolo *</label>
+                                <input type="text" class="form-control @error('title') is-invalid @enderror"
+                                       id="title" name="title" value="{{ old('title') }}" required>
+                                @error('title')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="author" class="form-label">Autore *</label>
+                                <input type="text" class="form-control @error('author') is-invalid @enderror"
+                                       id="author" name="author" value="{{ old('author') }}" required>
+                                @error('author')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="isbn" class="form-label">ISBN *</label>
+                                <input type="text" class="form-control @error('isbn') is-invalid @enderror"
+                                       id="isbn" name="isbn" value="{{ old('isbn') }}" required>
+                                @error('isbn')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="category_id" class="form-label">Categoria *</label>
+                                <select class="form-select @error('category_id') is-invalid @enderror"
+                                        id="category_id" name="category_id" required>
+                                    <option value="">Seleziona categoria</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
                                     @endforeach
-                                </tbody>
-                            </table>
+                                </select>
+                                @error('category_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                    @else
-                        <p class="text-center text-muted">Nessuna copia presente. Aggiungine una!</p>
-                    @endif
-                </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="publisher" class="form-label">Editore</label>
+                                <input type="text" class="form-control" id="publisher" name="publisher" value="{{ old('publisher') }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="publication_year" class="form-label">Anno Pubblicazione</label>
+                                <input type="number" class="form-control" id="publication_year" name="publication_year"
+                                       value="{{ old('publication_year') }}" min="1000" max="{{ date('Y') }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descrizione</label>
+                        <textarea class="form-control" id="description" name="description" rows="4">{{ old('description') }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cover_image" class="form-label">Copertina</label>
+                        <input type="file" class="form-control @error('cover_image') is-invalid @enderror"
+                               id="cover_image" name="cover_image" accept="image/*">
+                        <div class="form-text">Formati supportati: JPG, PNG, GIF. Dimensione massima: 2MB</div>
+                        @error('cover_image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ route('admin.books') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Indietro
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Salva Libro
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-
-    <div class="mt-3">
-        <a href="{{ route('admin.books') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Torna alla lista libri
-        </a>
     </div>
 </div>
 @endsection

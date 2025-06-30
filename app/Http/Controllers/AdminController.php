@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Reservation;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -84,8 +85,6 @@ class AdminController extends Controller
 
         return view('admin.users.index', compact('users'));
     }
-
-
 
     public function bookCopies(Book $book)
     {
