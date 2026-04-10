@@ -5,6 +5,8 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationConfirmed;
 
 class BookController extends Controller
 {
@@ -16,8 +18,11 @@ class BookController extends Controller
                      });
 
         if ($request->search) {
-            $query->where('title', 'like', '%' . $request->search . '%')
+            // CORREZIONE: Raggruppiamo l'OR dentro una funzione per non rompere il filtro "disponibile"
+            $query->where(function($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
                   ->orWhere('author', 'like', '%' . $request->search . '%');
+            });
         }
 
         if ($request->category_id) {
@@ -54,8 +59,12 @@ class BookController extends Controller
 
         $bestCopy->update(['status' => 'prenotato']);
 
+        // Invia l'email all'utente attualmente loggato (Impaginato correttamente)
+        Mail::to(auth()->user()->email)->send(new ReservationConfirmed($book));
+
         return back()->with('success', 'Libro prenotato con successo!');
     }
+
     public function myReservations()
     {
         $reservations = Reservation::with('bookCopy.book.category')
