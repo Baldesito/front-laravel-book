@@ -7,7 +7,7 @@
 <div class="jumbotron bg-primary text-white rounded p-5 mb-4">
     <div class="container-fluid text-center py-5">
         <h1 class="display-4"><i class="fas fa-book-open"></i> Benvenuto nella nostra Biblioteca</h1>
-        <p class="col-md-8 fs-4">Scopri migliaia di libri, prenota le tue letture preferite e gestisci le tue prenotazioni in modo semplice e veloce.</p>
+        <p class="col-md-12  fs-4">Scopri migliaia di libri, prenota le tue letture preferite e gestisci le tue prenotazioni in modo semplice e veloce.</p>
 
         @guest
             <div class="mt-4">
