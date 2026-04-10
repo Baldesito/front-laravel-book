@@ -73,12 +73,14 @@ La documentazione completa è disponibile in [`docs/README.md`](docs/README.md) 
 - 🛠️ Troubleshooting e FAQ
 - 🔌 API Reference
 
-## 🛠️ Requisiti Tecnici
+## 🛠️ Stack Tecnologico Dettagliato
 
-- **PHP**: 8.1+
-- **Laravel**: 10.x
-- **Database**: MySQL 8.0+ / MariaDB 10.3+
-- **Node.js**: 16+ (per build assets)
+- **Back-end:** Laravel 10.x, PHP 8.x
+- **Database:** MySQL / MariaDB (Architettura relazionale, Migrations, Seeders)
+- **Front-end:** HTML5, Blade Templates, Bootstrap 5 (UI Framework)
+- **Asset Compilation:** Vite (Configurato per gestione ottimizzata di JS/CSS)
+- **Architettura:** Pattern MVC (Model-View-Controller)
+- **Autenticazione:** Laravel UI / Auth system (Ruoli differenziati)
 
 ## 📞 Supporto
 
