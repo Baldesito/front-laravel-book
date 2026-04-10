@@ -1,8 +1,18 @@
 import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import tailwindcss from '@tailwindcss/vite'; // <-- Aggiunto import Tailwind v4
 
 export default defineConfig({
     plugins: [
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js'
+            ],
+            refresh: true,
+        }),
+        tailwindcss(), // <-- Aggiunto plugin Tailwind v4
         vue({
             template: {
                 transformAssetUrls: {
@@ -17,11 +27,4 @@ export default defineConfig({
             vue: 'vue/dist/vue.esm-bundler.js',
         },
     },
-    build: {
-        outDir: 'dist',
-        rollupOptions: {
-            input: 'resources/js/app.js', // Il tuo entry point principale
-        },
-    },
-    root: '.', // Root del progetto
 });

@@ -46,34 +46,18 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         @if($book->cover_image)
-                            <img src="{{ Storage::url($book->cover_image) }}" class="card-img-top" alt="{{ $book->title }}" style="height: 250px; object-fit: cover;">
+                            @if(Str::startsWith($book->cover_image, ['http://', 'https://']))
+                                {{-- Se è un link esterno (Factory) --}}
+                                <img src="{{ $book->cover_image }}" class="card-img-top" alt="{{ $book->title }}" style="height: 250px; object-fit: cover;">
+                            @else
+                                {{-- Se è un file caricato manualmente --}}
+                                <img src="{{ asset('storage/' . $book->cover_image) }}" class="card-img-top" alt="{{ $book->title }}" style="height: 250px; object-fit: cover;">
+                            @endif
                         @else
                             <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
                                 <i class="fas fa-book fa-3x text-muted"></i>
                             </div>
                         @endif
-
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ $book->title }}</h5>
-                            <p class="card-text">
-                                <strong>Autore:</strong> {{ $book->author }}<br>
-                                <strong>Categoria:</strong>
-                                <span class="badge bg-secondary">{{ $book->category->name }}</span>
-                            </p>
-
-                            @if($book->description)
-                                <p class="card-text flex-grow-1">{{ Str::limit($book->description, 100) }}</p>
-                            @endif
-
-                            <div class="mt-auto">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <small class="text-muted">
-                                        <i class="fas fa-copy"></i>
-                                        {{ $book->availableCopies->count() }} disponibili
-                                    </small>
-                                    @if($book->publication_year)
-                                        <small class="text-muted">{{ $book->publication_year }}</small>
-                                    @endif
                                 </div>
 
                                 <a href="{{ route('books.show', $book) }}" class="btn btn-primary btn-sm w-100">

@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -8,4 +8,21 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+/* resources/css/app.css */
+
+body {
+    /* Un grigio chiaro molto riposante per la vista */
+    background-color: #f4f6f8;
+    color: #2c3e50;
+}
+
+/* Assicuriamoci che la navbar e il footer rimangano nitidi */
+.navbar, .custom-footer {
+    background-color: #ffffff !important;
+}
+
+/* Stile per dare un po' di "respiro" al main content */
+main {
+    min-height: calc(100vh - 160px); /* Assicura che il footer stia sempre in basso */
 }
